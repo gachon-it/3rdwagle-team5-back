@@ -14,7 +14,6 @@ const upload = multer({ dest: "uploads/" });
  * - Content-Type: multipart/form-data
  */
 scheduleRouter.post("/upload", upload.single("file"), async (req, res) => {
-  console.log(req.file);
   if (!req.file)
     return res.status(400).send({ success: false, error: "등록된 파일 없음." });
 
