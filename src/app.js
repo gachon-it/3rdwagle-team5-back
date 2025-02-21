@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import { scheduleRouter } from "./controllers/scheduler.js";
+import { scheduleRouter } from "./controllers/schedulerController.js";
 
 dotenv.config();
 
