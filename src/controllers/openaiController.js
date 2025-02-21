@@ -1,18 +1,8 @@
-import express from "express";
-import { summarizeText } from "../services/openaiapiService.js"; // ✅ import 경로 수정
+import { summarizeText } from "../services/openaiapiService.js"; // ✅ OpenAI 서비스 함수 가져오기
 
-const openaiRouter = express.Router();
-
-/**
- * 1️⃣ 텍스트 요약 API
- * - URL: `/openai/summarize`
- * - Method: POST
- * - Content-Type: application/json
- */
-openaiRouter.post("/summarize", async (req, res) => {
+export async function summarizeTextController(req, res) {
   const { inputText } = req.body;
 
-  // 입력 값 검증
   if (!inputText || inputText.trim() === "") {
     return res.status(400).json({
       success: false,
@@ -21,10 +11,8 @@ openaiRouter.post("/summarize", async (req, res) => {
   }
 
   try {
-    // OpenAI 서비스 호출
     const summarizedText = await summarizeText(inputText);
 
-    // 결과 반환
     return res.status(200).json({
       success: true,
       message: "텍스트 요약 성공",
@@ -37,8 +25,4 @@ openaiRouter.post("/summarize", async (req, res) => {
       error: error.message || "텍스트 요약에 실패했습니다.",
     });
   }
-});
-export function getOpenAIResponse(req, res) {
-  res.json({ success: true, message: "OpenAI API is working!" });
 }
-export default openaiRouter;
