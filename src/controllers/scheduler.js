@@ -2,6 +2,7 @@ import { Router } from "express";
 import multer from "multer";
 import path from "path";
 import { runOCR } from "../services/ocr.js";
+import { summarizeText } from "../services/openaiapiService.js";
 
 export const scheduleRouter = Router();
 const upload = multer({ dest: "uploads/" });
@@ -21,12 +22,13 @@ scheduleRouter.post("/upload", upload.single("file"), async (req, res) => {
 
   try {
     // 일정 정보 추출을 위한 OCR을 사용한 서비스 함수 호출
-    const events = await runOCR(filePath);
+    const eventText = await runOCR(filePath);
+    const summarizedText = await summarizeText(eventText);
 
-    return res.status(200).send({
+    return res.status(200).json({
       success: true,
-      message: "일정 추출 성공",
-      events: events.text,
+      message: "텍스트 요약 성공",
+      summarizedText,
     });
   } catch (error) {
     console.error("이미지 처리 에러 발생:", error);
