@@ -1,13 +1,5 @@
-import OpenAI from "openai";
-import dotenv from "dotenv";
 import { SUMMARIZATION_PROMPT } from "../constant.js";
-
-dotenv.config(); // 환경 변수 로드
-
-// OpenAI API 설정
-const openai = new OpenAI({
-  apiKey: process.env.OPENAPI_KEY,
-});
+import openai from "../config/openaiConfig.js";
 
 /**
  * OpenAI API를 사용하여 입력된 텍스트를 요약하는 함수
