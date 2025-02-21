@@ -22,8 +22,8 @@ scheduleRouter.post("/upload", upload.single("file"), async (req, res) => {
 
   try {
     // 일정 정보 추출을 위한 OCR을 사용한 서비스 함수 호출
-    const eventText = await runOCR(filePath);
-    const summarizedText = await summarizeText(eventText);
+    const event = await runOCR(filePath);
+    const summarizedText = await summarizeText(event.text);
 
     return res.status(200).json({
       success: true,
