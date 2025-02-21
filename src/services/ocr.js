@@ -1,5 +1,4 @@
 import { spawn } from "child_process";
-import path from "path";
 import fs from "fs";
 import { OCR_SCRIPT_PATH } from "../constant.js";
 
