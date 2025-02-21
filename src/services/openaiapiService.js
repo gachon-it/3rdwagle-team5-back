@@ -1,11 +1,11 @@
-import OpenAI from "openai"; // ✅ 최신 openai 버전에서는 OpenAI 클래스를 사용
+import OpenAI from "openai";
 import dotenv from "dotenv";
 
 dotenv.config(); // 환경 변수 로드
 
 // OpenAI API 설정
 const openai = new OpenAI({
-  apiKey: process.env.OPENAPI_KEY, // ✅ 환경 변수에서 API 키 가져오기 (.env에서 확인 필요!)
+  apiKey: process.env.OPENAPI_KEY,
 });
 
 // 텍스트 요약 함수
@@ -28,20 +28,24 @@ export async function summarizeText(inputText) {
           2023-08-20T10:30:00+09:00/대학생 해커톤 대회/2023년 8월 20일에 대학생 대상 해커톤이 진행됩니다.
     
           입력 내용:
-          ${inputText}`
+          ${inputText}`,
         },
       ],
       max_tokens: 300,
       temperature: 0.4,
     });
 
-    const summarizedText = response.choices[0].message.content.trim(); 
+    const summarizedText = response.choices[0].message.content.trim();
 
     // GPT 응답에서 내용 추출
-    return summarizedText
-
+    return summarizedText;
   } catch (error) {
-    console.error("❌ OpenAI API 요청 실패:", error.response?.data || error.message);
-    throw new Error(error.response?.data?.error?.message || "OpenAI API 요청 실패");
+    console.error(
+      "❌ OpenAI API 요청 실패:",
+      error.response?.data || error.message
+    );
+    throw new Error(
+      error.response?.data?.error?.message || "OpenAI API 요청 실패"
+    );
   }
 }
