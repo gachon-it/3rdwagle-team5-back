@@ -3,7 +3,7 @@ import fs from "fs";
 import { OCR_SCRIPT_PATH } from "../constant.js";
 
 /**
- * OCR 서비스: Python OCR 스크립트 실행
+ * OCR 서비스: Python 스크립트 실행하여 이미지 파일을 텍스트로 변환
  * @param {string} filePath - 업로드된 이미지 파일 경로
  * @returns {Promise<object>} OCR 결과(JSON)
  */

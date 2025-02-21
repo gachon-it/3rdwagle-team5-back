@@ -21,8 +21,10 @@ scheduleRouter.post("/upload", upload.single("file"), async (req, res) => {
   const filePath = path.resolve(req.file.path);
 
   try {
-    // 일정 정보 추출을 위한 OCR을 사용한 서비스 함수 호출
+    // 사진 파일에서 OCR을 통해 텍스트를 추출하는 서비스 함수 호출
     const event = await runOCR(filePath);
+
+    // 추출된 텍스트를 OpenAI API를 사용하여 요약하는 서비스 함수 호출
     const summarizedText = await summarizeText(event.text);
 
     return res.status(200).json({

@@ -9,7 +9,12 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAPI_KEY,
 });
 
-// 텍스트 요약 함수
+/**
+ * OpenAI API를 사용하여 입력된 텍스트를 요약하는 함수
+ * @param {string} inputText - 요약할 원본 텍스트
+ * @returns {Promise<string>} GPT 모델이 생성한 요약된 텍스트
+ * @throws {Error} OpenAI API 요청 실패 시 예외 발생
+ */
 export async function summarizeText(inputText) {
   try {
     const prompt = SUMMARIZATION_PROMPT.replace("{{inputText}}", inputText);
@@ -26,13 +31,12 @@ export async function summarizeText(inputText) {
       temperature: 0.4,
     });
 
-    const summarizedText = response.choices[0].message.content.trim();
+    const summarizedTextByGPT = response.choices[0].message.content.trim();
 
-    // GPT 응답에서 내용 추출
-    return summarizedText;
+    return summarizedTextByGPT;
   } catch (error) {
     console.error(
-      "❌ OpenAI API 요청 실패:",
+      "OpenAI API 요청 실패:",
       error.response?.data || error.message
     );
     throw new Error(
