@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
 import path from "path";
-import { runOCR } from "../services/ocr.js";
+import { runOCR } from "../services/ocrServie.js";
 import { summarizeText } from "../services/openaiapiService.js";
 
 export const scheduleRouter = Router();
