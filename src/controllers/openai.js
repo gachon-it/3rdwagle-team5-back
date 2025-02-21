@@ -1,32 +1,42 @@
-import { Configuration, OpenAIApi } from "openai";
-import dotenv from "dotenv";
-dotenv.config(); // 환경변수 .env 파일 사용
+import express from "express";
+import { summarizeText } from "../services/openapiService.js"; // 서비스에서 summarizeText 함수를 가져옴
 
-// OpenAI API 설정
-const configuration = new Configuration({
+const openapiRouter = express.Router();
 
-});
-const openai = new OpenAIApi(configuration);
+/**
+ * 1️⃣ 텍스트 요약 API
+ * - URL: `/openapi/summarize`
+ * - Method: POST
+ * - Content-Type: application/json
+ */
+openapiRouter.post("/summarize", async (req, res) => {
+  const { inputText } = req.body;
 
-// 텍스트 요약 함수
-export async function summarizeText(inputText) {
-  try {
-    // OpenAI API 호출: 텍스트를 요약하는 요청
-    const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",  // 또는 gpt-4-turbo
-      messages: [
-        {
-          role: "user",
-          content: `다음 내용을 바탕으로 일시, 제목, 세부 내용을 요약해 주세요. 예시: ${inputText}`,
-        },
-      ],
+  // 텍스트가 없다면 400 에러 응답
+  if (!inputText) {
+    return res.status(400).json({
+      success: false,
+      error: "입력된 텍스트가 없습니다.",
     });
-
-    // 요약된 텍스트 반환
-    const summarizedText = response.data.choices[0].message.content;
-    return summarizedText;
-  } catch (error) {
-    console.error("❌ OpenAI API 요청 실패:", error);
-    throw new Error("API 요청 실패");
   }
-}
+
+  try {
+    // 서비스에서 텍스트 요약 함수 호출
+    const summarizedText = await summarizeText(inputText);
+
+    // 요약된 텍스트를 클라이언트에 반환
+    return res.status(200).json({
+      success: true,
+      message: "텍스트 요약 성공",
+      summarizedText,
+    });
+  } catch (error) {
+    console.error("텍스트 요약 중 에러 발생:", error);
+    return res.status(500).json({
+      success: false,
+      error: "텍스트 요약에 실패했습니다.",
+    });
+  }
+});
+
+export default openapiRouter;
