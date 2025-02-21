@@ -26,7 +26,7 @@ scheduleRouter.post("/upload", upload.single("file"), async (req, res) => {
     return res.status(200).send({
       success: true,
       message: "일정 추출 성공",
-      events: events,
+      events: events.text,
     });
   } catch (error) {
     console.error("이미지 처리 에러 발생:", error);

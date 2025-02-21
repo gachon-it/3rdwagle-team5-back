@@ -10,10 +10,7 @@ import { OCR_SCRIPT_PATH } from "../constant.js";
  */
 export const runOCR = (filePath) => {
   return new Promise((resolve, reject) => {
-    const pythonProcess = spawn("python", [
-      path.resolve(OCR_SCRIPT_PATH),
-      filePath,
-    ]);
+    const pythonProcess = spawn("python", [OCR_SCRIPT_PATH, filePath]);
 
     let result = "";
 
@@ -37,7 +34,9 @@ export const runOCR = (filePath) => {
       } catch (error) {
         reject(new Error("OCR 결과 처리 실패"));
       } finally {
-        fs.unlinkSync(filePath); // 임시 파일 삭제
+        fs.unlink(filePath, (err) => {
+          if (err) console.error("파일 삭제 실패:", err);
+        });
       }
     });
   });
